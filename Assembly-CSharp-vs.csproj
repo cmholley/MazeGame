@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{A513BC8D-6A7D-D6C5-EEBE-D27CF600D276}</ProjectGuid>
+	<ProjectGuid>{A21DA567-4D02-FAFA-3719-CDAEF370184D}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -49,7 +49,11 @@
      <Compile Include="Assets\RandomMapGeneration.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
  <Reference Include="Assembly-UnityScript-firstpass">
+<<<<<<< HEAD
  <HintPath>C:/Users/Christopher/Desktop/MazeGame/Test/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+=======
+ <HintPath>C:/Users/Secondchair/Desktop/MazeGame/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+>>>>>>> eb0f106ca4b904a8d93edd41ad66dc9b60af2837
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.2/UnityEngine.UI.dll</HintPath>
@@ -57,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
-      <Project>{6BCF1753-8618-A6C0-7F1D-4322E3AED478}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
+      <Project>{4523C63B-A14D-4336-DE4A-57F2D2991396}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
