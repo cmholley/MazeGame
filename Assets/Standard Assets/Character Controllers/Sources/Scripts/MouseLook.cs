@@ -1,67 +1,63 @@
 using UnityEngine;
 using System.Collections;
 
-[AddComponentMenu("Camera-Control/Mouse Orbit with zoom")]
-public class MouseOrbitImproved : MonoBehaviour {
-	
-	public Transform target;
-	public float distance = 5.0f;
-	public float xSpeed = 120.0f;
-	public float ySpeed = 120.0f;
-	
-	public float yMinLimit = -20f;
-	public float yMaxLimit = 80f;
-	
-	public float distanceMin = .5f;
-	public float distanceMax = 15f;
-	
-	float x = 0.0f;
-	float y = 0.0f;
-	
-	// Use this for initialization
-	void Start () {
-		Vector3 angles = transform.eulerAngles;
-		x = angles.y;
-		y = angles.x;
-		
-		// Make the rigid body not change rotation
-		if (rigidbody)
-			rigidbody.freezeRotation = true;
-	}
-	
-	void LateUpdate () {
-		if (target) {
-			x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.02f;
-			y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-			
-			y = ClampAngle(y, yMinLimit, yMaxLimit);
-			
-			Quaternion rotation = Quaternion.Euler(y, x, 0);
-			
-			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel")*5, distanceMin, distanceMax);
-			
-			RaycastHit hit;
-			if (Physics.Linecast (target.position, transform.position, out hit)) {
-				distance -=  hit.distance;
-			}
-			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-			Vector3 position = rotation * negDistance + target.position;
-			
-			transform.rotation = rotation;
-			transform.position = position;
-			
-		}
-		
-	}
-	
-	public static float ClampAngle(float angle, float min, float max)
+/// MouseLook rotates the transform based on the mouse delta.
+/// Minimum and Maximum values can be used to constrain the possible rotation
+
+/// To make an FPS style character:
+/// - Create a capsule.
+/// - Add the MouseLook script to the capsule.
+///   -> Set the mouse look to use LookX. (You want to only turn character but not tilt it)
+/// - Add FPSInputController script to the capsule
+///   -> A CharacterMotor and a CharacterController component will be automatically added.
+
+/// - Create a camera. Make the camera a child of the capsule. Reset it's transform.
+/// - Add a MouseLook script to the camera.
+///   -> Set the mouse look to use LookY. (You want the camera to tilt up and down like a head. The character already turns.)
+[AddComponentMenu("Camera-Control/Mouse Look")]
+public class MouseLook : MonoBehaviour {
+
+	public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
+	public RotationAxes axes = RotationAxes.MouseXAndY;
+	public float sensitivityX = 15F;
+	public float sensitivityY = 15F;
+
+	public float minimumX = -360F;
+	public float maximumX = 360F;
+
+	public float minimumY = -60F;
+	public float maximumY = 60F;
+
+	float rotationY = 0F;
+
+	void Update ()
 	{
-		if (angle < -360F)
-			angle += 360F;
-		if (angle > 360F)
-			angle -= 360F;
-		return Mathf.Clamp(angle, min, max);
+		if (axes == RotationAxes.MouseXAndY)
+		{
+			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+			
+			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+			
+			transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+		}
+		else if (axes == RotationAxes.MouseX)
+		{
+			transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+		}
+		else
+		{
+			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+			
+			transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+		}
 	}
 	
-	
+	void Start ()
+	{
+		// Make the rigid body not change rotation
+		if (GetComponent<Rigidbody>())
+			GetComponent<Rigidbody>().freezeRotation = true;
+	}
 }
