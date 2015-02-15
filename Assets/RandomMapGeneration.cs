@@ -37,6 +37,10 @@ public class RandomMapGeneration : MonoBehaviour {
     Wx;
     */
     public GameObject prefab;
+    public GameObject bottomWall;
+    public GameObject leftWall;
+    public GameObject rightWall;
+    public GameObject topWall;
     int rand;
     public float gridX = 5f;
     public float gridY = 5f;
@@ -47,11 +51,11 @@ public class RandomMapGeneration : MonoBehaviour {
     void Start(){
         for (int y = 0; y < gridY; y++)
         {
-            for (int x = 0; x < gridX; x++)
+            for (int x = 0 ; x < gridX; x++)
             {
                rand = random.Next(1,16);
                
-                switch(rand)
+                switch(rand) //
                 {
                     case 1:
                         prefab = ES;
@@ -103,6 +107,27 @@ public class RandomMapGeneration : MonoBehaviour {
                 Vector3 pos = new Vector3(x, 0, y) * spacing;
                 Instantiate(prefab, pos, Quaternion.identity);
             }
+
+        }
+        for(int x = 0; x <gridX; x++) //bottom wall
+        {
+            Vector3 pos = new Vector3(x * spacing, 5/2, -10);
+            Instantiate(bottomWall, pos, Quaternion.identity);
+        }
+        for (int x = 0; x < gridX; x++)//top wall
+        {
+            Vector3 pos = new Vector3(x * spacing, 5 / 2, gridY * spacing -10);
+            Instantiate(topWall, pos, Quaternion.identity);
+        }
+        for (int y = 0; y < gridY; y++) //left wall
+        {
+            Vector3 pos = new Vector3(-10, 5 / 2, y * spacing);
+            Instantiate(leftWall, pos, Quaternion.identity);
+        }
+        for (int y = 0; y < gridY; y++) //right wall
+        {
+            Vector3 pos = new Vector3(gridY * spacing - 10, 5 / 2, y * spacing);
+            Instantiate(leftWall, pos, Quaternion.identity);
         }
     }
 	
